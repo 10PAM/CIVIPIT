@@ -37,6 +37,7 @@ influenza_symptomps = [sl[0], sl[4], sl[5], sl[6], sl[9], sl[11], sl[13], sl[14]
 stomach_flu_symptoms = [sl[0], sl[10], sl[11], sl[12], sl[13], sl[14], sl[15], sl[16], sl[17], sl[18], sl[19], sl[20]]
 pneumonia_symptoms = [sl[0], sl[1], sl[2], sl[3], sl[12], sl[13], sl[14], sl[21], sl[22]]
 
+'''
 def writeData(file_name="", illness_name="", illness_symptoms=[]):
     with open(file_name, "w+") as covid_data:
         final_data_line = illness_name + ","
@@ -51,6 +52,7 @@ writeData("Common_Illnesses/Influenza_Symptoms.txt", "Infleunza", influenza_symp
 writeData("Common_Illnesses/Stomach_Flu_Symptoms.txt", "Stomach Flu", stomach_flu_symptoms)
 writeData("Common_Illnesses/Pneumonia_Symptoms.txt", "Pneumonia", pneumonia_symptoms)
 
+'''
 # Import our algo AI algorithm
 
 # Function to check symptoms and return True or False
@@ -117,7 +119,7 @@ def screenUser(user_first="", user_age=0):
         if symptom in illness:
             if unique_symptom == 1:
                 # Add points to get increase by the amount of common_illnesses minus the illness
-                potentiallity = len(common_illnesses) - 1
+                potentiallity = 3 #len(common_illnesses) - 1
             #elif unique_symptom == 2:
                 #potentiallity = 2
             else:
@@ -194,7 +196,7 @@ def generateUser():
 
 # Generate user(s) and write to a text file to save the samples
 def generateUsers(directory, amount_to_generate=1):
-    with open("Generated/Generated_Samples.txt", "w+") as generated_sample_file:
+    with open("Generated_Samples.txt", "w+") as generated_sample_file:
         for index in range(0, amount_to_generate):
             generated_sample_file.write(generateUser() + "\n")
     # To print a white line for spacing
@@ -215,7 +217,7 @@ def screenUsers(dataset):
 # Generate (n) users
 if testing:
     # generateUsers("Generated/Generated_Samples.txt", 8)
-    screenUsers(generateUsers("Generated/Generated_Samples.txt", 8))
+    screenUsers(generateUsers("Generated_Samples.txt", 8))
 else:
     screenUser()
 
