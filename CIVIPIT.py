@@ -1,28 +1,8 @@
 # Author(s): Mario Aguilera; Jakob Greene; Jacky Njoroge;
 
-# Determine if program is in testing mode
-testing = True
-
 #import libraries for algorithm needs and data visualization
 import random
 import matplotlib.pyplot as pypl
-
-# import numpy?
-# import pillow/PIL?
-
-'''
-ToDo:
-    1. Save result in table then compare the current temporary table with the saved table and overwrite the old table if new dataset leads
-    to faster prediction
-    2. Example (Data_Saved.txt):
-        For data in Data_Saved:
-            Data_Line = data.split(',')
-            Data_Line = Data_Line.pop(0)
-    3. Compare values and determine if there is a pattern of more than 2 similar symptoms. If so, predict the result
-    4. Another option (For testing): If program is in testing mode, and user determines the viral illness predicted is wrong,
-    then correct the Data
-    
-'''
 
 # For symptoms, in each include 1 specific unique symptom to each if possible,
 # if not, 1 specific system unique to few to allow for easier determination
@@ -36,23 +16,6 @@ common_cold_symptoms = [sl[0], sl[2], sl[4], sl[5], sl[6], sl[10], sl[11], sl[23
 influenza_symptomps = [sl[0], sl[4], sl[5], sl[6], sl[9], sl[11], sl[13], sl[14]]
 stomach_flu_symptoms = [sl[0], sl[10], sl[11], sl[12], sl[13], sl[14], sl[15], sl[16], sl[17], sl[18], sl[19], sl[20]]
 pneumonia_symptoms = [sl[0], sl[1], sl[2], sl[3], sl[12], sl[13], sl[14], sl[21], sl[22]]
-
-'''
-def writeData(file_name="", illness_name="", illness_symptoms=[]):
-    with open(file_name, "w+") as covid_data:
-        final_data_line = illness_name + ","
-        for i in range(0, len(illness_symptoms)):
-            final_data_line += illness_symptoms[i] + ","
-        
-        covid_data.write(final_data_line + "\n")
-        
-writeData("Common_Illnesses/Covid_Symptoms.txt", "Covid", covid_symptoms)
-writeData("Common_Illnesses/Common_Cold_Symptoms.txt", "Common Cold", common_cold_symptoms)
-writeData("Common_Illnesses/Influenza_Symptoms.txt", "Infleunza", influenza_symptomps)
-writeData("Common_Illnesses/Stomach_Flu_Symptoms.txt", "Stomach Flu", stomach_flu_symptoms)
-writeData("Common_Illnesses/Pneumonia_Symptoms.txt", "Pneumonia", pneumonia_symptoms)
-
-'''
 # Import our algo AI algorithm
 
 # Function to check symptoms and return True or False
@@ -213,15 +176,31 @@ def screenUsers(dataset):
     except:
         print("Error opening data file!")
 
+# Function to check if program mode is testing or not
+def checkMode():
+    answer = 0
+    
+    # Use try and expect to help with input error handling for user
+    error_message = "Please enter either 1 (for true) or 0 (for false)."
+    try:
+        answer = int(input("Welcome: Testing Mode (0 = False; 1 = True)?: "))
+        if answer != 0 and answer != 1:
+            print(error_message)
+            answer = checkMode()
+    except:
+        print(error_message)
+        checkMode()
+    
+    # Return answer as a bool (1 or 0)
+    return bool(answer)
 
-# Generate (n) users
-if testing:
-    # generateUsers("Generated/Generated_Samples.txt", 8)
-    screenUsers(generateUsers("Generated_Samples.txt", 8))
-else:
-    screenUser()
-
-#screenUser(generateUser())
-
-# For a presentation, generate 1 data file for 10 generated persons and include the symptoms they all have relating to a generated specific illness
-# e.g. Mario: Fever, Chills, etc... but it includes one or more few unique symptoms to determine single illness
+def startProgram():
+    # Determine if program is in testing mode
+    mode = checkMode()
+    if mode:
+        # Generate (n) users
+        screenUsers(generateUsers("Generated_Samples.txt", 8))
+    else:
+        screenUser()
+    
+startProgram()
