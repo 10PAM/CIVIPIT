@@ -67,7 +67,7 @@ def screenUser(user_first="", user_age=0):
     def checkPotentiallity(symptom, illness):
         potentiallity = 0
         
-        # Issue: Covid being ahead a lot of the times. Potentially caused by having a lot of similar symptoms as other
+        # Subtle Issue: Covid being ahead a lot of the times. Potentially caused by having a lot of similar symptoms as other
 
         # Determine if symtpom being checked is unqiue to all illnesses, if so, add to unique symptom for more points
         unique_symptom = 0
@@ -93,7 +93,7 @@ def screenUser(user_first="", user_age=0):
         
         return potentiallity
     
-    # ToDO: Implement machine learning recognizition algorithms to predict using patterns in user input
+    # Check for Symptom in Symptoms Lists
     for symptom in sl:
         if (not user_is_generated and checkSymptom(symptom)) or (symptom in user_generated_symptoms):
             potential_for_covid += checkPotentiallity(symptom, covid_symptoms)
@@ -116,7 +116,8 @@ def screenUser(user_first="", user_age=0):
     pypl.ylabel("Potentiallity")
     pypl.title("Potentiallity of Illness(es) for " + user_first)
     pypl.show()
-    # To print white line for spacing/formatting
+    
+    # Print white line for spacing/formatting
     print()
 
 # Function to generate a user with a randomly picked name and a range of symptoms from their radnomly selected illness
@@ -196,7 +197,7 @@ def checkMode():
     # Return answer as a bool (1 or 0)
     return bool(answer)
 
-# If Testing, Ask user how many users with viral illness symtpoms to generate
+# If Testing, Ask User How Many Users To Generate with Viral Illnesses
 def amountToGenerate():
     amount = 0
     
@@ -213,6 +214,7 @@ def amountToGenerate():
         
     return amount
 
+# Method to Begin Program
 def startProgram():
     # Describe program
     print("Welcome, Thank You For Trying " + program_name + "! \n")
