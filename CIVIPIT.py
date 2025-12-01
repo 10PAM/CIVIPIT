@@ -1,8 +1,14 @@
-# Author(s): Mario Aguilera; Jakob Greene; Jacky Njoroge;
+# Author(s): Mario Aguilera; Jakob Greene; Jacky Njoroge
+# Date: 11/15/2026
+# File: CIVIPIT.py
+# About: Program that screens a user for 5 of the most commo viral infections in the US (Per the CDC)
 
 #import libraries for algorithm needs and data visualization
 import random
 import matplotlib.pyplot as pypl
+
+# Define Program Properties
+program_name = "CIVIPIT"
 
 # For symptoms, in each include 1 specific unique symptom to each if possible,
 # if not, 1 specific system unique to few to allow for easier determination
@@ -31,7 +37,7 @@ def checkSymptom(symptom):
             answer = checkSymptom(symptom)
     except:
         print(error_message)
-        checkSymptom(symptom)
+        answer = checkSymptom(symptom)
         
     return bool(answer)
 
@@ -51,7 +57,7 @@ def screenUser(user_first="", user_age=0):
     if user_first == "":
         user_is_generated = False
         user_first = input("Please enter your first name: ")
-        print("Hello", user_first + ", please answer with either 1 (true) or 0 (false) to the following symptoms you may be feeling to determine potential illness(s) that you may have:")
+        print("\nHello", user_first + ", please answer with either 1 (true) or 0 (false) to the following symptoms you may be feeling to determine potential illness(s) that you may be experiencing:\n")
     else:
         # Split the user generated data by splitting into list by delimeter and then removing first element (name, not a symptom)
         user_generated_symptoms += user_first.split(',')
@@ -81,10 +87,7 @@ def screenUser(user_first="", user_age=0):
         # If symptom is unique, add more points
         if symptom in illness:
             if unique_symptom == 1:
-                # Add points to get increase by the amount of common_illnesses minus the illness
-                potentiallity = 3 #len(common_illnesses) - 1
-            #elif unique_symptom == 2:
-                #potentiallity = 2
+                potentiallity = 3
             else:
                 potentiallity = 1
         
@@ -93,8 +96,6 @@ def screenUser(user_first="", user_age=0):
     # ToDO: Implement machine learning recognizition algorithms to predict using patterns in user input
     for symptom in sl:
         if (not user_is_generated and checkSymptom(symptom)) or (symptom in user_generated_symptoms):
-            # Subtract potential for other illnesses if question answers are answered uncorrectly
-            # If at one point, one illness is greater than another by 1, auto-predict
             potential_for_covid += checkPotentiallity(symptom, covid_symptoms)
             potential_for_common_cold += checkPotentiallity(symptom, common_cold_symptoms)
             potential_for_stomach_flu += checkPotentiallity(symptom, stomach_flu_symptoms)
@@ -162,7 +163,8 @@ def generateUsers(directory, amount_to_generate=1):
     with open("Generated_Samples.txt", "w+") as generated_sample_file:
         for index in range(0, amount_to_generate):
             generated_sample_file.write(generateUser() + "\n")
-    # To print a white line for spacing
+            
+    # Print a white line for spacing
     print()
     
     return directory
@@ -183,24 +185,45 @@ def checkMode():
     # Use try and expect to help with input error handling for user
     error_message = "Please enter either 1 (for true) or 0 (for false)."
     try:
-        answer = int(input("Welcome: Testing Mode (0 = False; 1 = True)?: "))
+        answer = int(input("Would you Like to Run in Testing Mode? \n" + "(0 = False; 1 = True): "))
         if answer != 0 and answer != 1:
             print(error_message)
             answer = checkMode()
     except:
         print(error_message)
-        checkMode()
+        answer = checkMode()
     
     # Return answer as a bool (1 or 0)
     return bool(answer)
 
+# If Testing, Ask user how many users with viral illness symtpoms to generate
+def amountToGenerate():
+    amount = 0
+    
+    # Use try and expect to help with input error handling for user
+    error_message = "Please enter a proper number of users to generate."
+    try:
+        amount = int(input("Please enter a number of users to generate: "))
+        if amount == None:
+            print(error_message)
+            amount = amountToGenerate()
+    except:
+        print(error_message)
+        amount = amountToGenerate()
+        
+    return amount
+
 def startProgram():
+    # Describe program
+    print("Welcome, Thank You For Trying " + program_name + "! \n")
+    
     # Determine if program is in testing mode
-    mode = checkMode()
-    if mode:
+    testingMode = checkMode()
+    if testingMode:
         # Generate (n) users
-        screenUsers(generateUsers("Generated_Samples.txt", 8))
+        screenUsers(generateUsers("Generated_Samples.txt", amountToGenerate()))
     else:
         screenUser()
-    
+
+# Begin Program
 startProgram()
